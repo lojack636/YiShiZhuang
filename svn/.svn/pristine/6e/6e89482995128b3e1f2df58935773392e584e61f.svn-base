@@ -1,0 +1,164 @@
+<title>
+	新增公司资料 - EasyJob</title>
+
+<link rel="stylesheet" href="assets/css/chosen.css" />
+
+<!-- ajax layout which only needs content area -->
+<div class="page-header">
+	<h1>
+		公司管理
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			新增公司资料
+		</small>
+	</h1>
+</div>
+<!-- /.page-header -->
+
+<div class="row">
+	<div class="col-xs-12">
+		<!-- PAGE CONTENT BEGINS -->
+		<form class="form-horizontal" role="form" id="company" v-on:submit.prevent="onSubmit">
+			<!-- #section:elements.form -->
+			<div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right"> 公司名称 </label>
+				<div class="col-sm-9">
+					<input type="text" class="col-xs-10 col-sm-5" v-model="CnName" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right"> 英文名 </label>
+				<div class="col-sm-9">
+					<input type="text" class="col-xs-10 col-sm-5" v-model="EnName" />
+				</div>
+			</div>
+			<!-- /section:elements.form -->
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right"> 英文简称 </label>
+				<div class="col-sm-9">
+					<input type="text" class="col-xs-10 col-sm-5" v-model="CompCode" />
+					<span class="help-inline col-xs-12 col-sm-7 orange">
+						<span class="middle">Inline help text</span>
+					</span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right"> 公司简称 </label>
+				<div class="col-sm-9">
+					<input type="text" class="col-xs-10 col-sm-5" v-model="CompShortTitle" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right"> 地址 </label>
+				<div class="col-sm-9">
+					<div id="form-field-ssq">
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right">最高职位代码</label>
+				<div class="col-sm-9">
+					<input type="text" class="col-xs-10 col-sm-5" v-model="TopPosCode" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right">最高职位名称</label>
+				<div class="col-sm-9">
+					<input type="text" class="col-xs-10 col-sm-5" v-model="TopPosName" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right">邮编</label>
+				<div class="col-sm-9">
+					<input type="text" class="col-xs-10 col-sm-5" v-model="Zipcode" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right">电话</label>
+				<div class="col-sm-9">
+					<input type="text" class="col-xs-10 col-sm-5" v-model="Tel" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right">传真</label>
+				<div class="col-sm-9">
+					<input type="text" class="col-xs-10 col-sm-5" v-model="Fax" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right">电子邮箱</label>
+				<div class="col-sm-9">
+					<input type="text" class="col-xs-10 col-sm-5" v-model="Mail" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label no-padding-right">网站</label>
+				<div class="col-sm-9">
+					<input type="text" class="col-xs-10 col-sm-5" v-model="Web" />
+				</div>
+			</div>
+
+			<div class="clearfix form-actions">
+				<div class="col-md-offset-3 col-md-9">
+					<button class="btn btn-info" type="submit">
+						<i class="ace-icon fa fa-check bigger-110"></i> 提交
+					</button>
+					&nbsp; &nbsp; &nbsp;
+					<button class="btn" type="reset">
+						<i class="ace-icon fa fa-undo bigger-110"></i> 重置
+					</button>
+				</div>
+			</div>
+
+		</form>
+		<!-- PAGE CONTENT ENDS -->
+	</div>
+	<!-- /.col -->
+</div>
+<!-- /.row -->
+
+<!-- page specific plugin scripts -->
+<script type="text/javascript">
+	var scripts = [null,
+		"personnel/company.js",
+		"assets/js/chosen.jquery.js",
+		"assets/modules/selectAddress.js",
+		null
+	]
+	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
+		//inline scripts related to this page
+		jQuery(function($) {
+			$('#form-field-ssq').selectAddress({
+				"change": function(value) {
+					vm.$data.AddrCode = value;
+				}
+			});
+			var com = new Company();
+			var vm = new Vue({
+				el: '#company',
+				data: com.data,
+				ready: function() {},
+				methods: {
+					onSubmit: function(event) {
+						com.add(this, function(response) {
+							console.log(response);
+						}, function(response) {
+							//							console.log(response);
+						});
+					}
+				}
+			})
+		});
+	});
+</script>

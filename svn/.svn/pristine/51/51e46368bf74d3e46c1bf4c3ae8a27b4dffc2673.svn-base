@@ -1,0 +1,6 @@
+function Unit() {
+	this.data = $.extend({}, new TbBase().data, {
+		UnitName: "",
+		UnitDesc: ""
+	});
+};

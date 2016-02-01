@@ -1,0 +1,9 @@
+function Position() {
+	this.data = $.extend({}, new TbBase().data, {
+		PId: "",
+		Code: "",
+		Name: "",
+		Dept: "",
+		OrderId: ""
+	});
+};

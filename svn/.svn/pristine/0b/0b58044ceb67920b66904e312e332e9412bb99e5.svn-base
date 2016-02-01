@@ -1,0 +1,12 @@
+http://www.cnblogs.com/artech/p/cors-4-asp-net-web-api-02.html
+http://netsecurity.51cto.com/art/201311/419179.htm
+
+    <httpProtocol>
+      <customHeaders>
+        <add name="Access-Control-Allow-Origin" value="*" />
+        <add name="Access-Control-Allow-Credentials" value="true" />
+        <add name="Access-Control-Max-Age" value="600" />
+        <add name="Access-Control-Allow-Headers" value="authorization" />
+        <add name="Access-Control-Allow-Methods" value="GET, POST, PUT, DELETE" />
+      </customHeaders>
+    </httpProtocol>

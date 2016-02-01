@@ -1,0 +1,6 @@
+Vue.config.debug = true;
+Vue.http.options.emulateJSON = true;
+Vue.http.headers.common['Authorization'] = 'Basic YXBpOnBhc3N3b3Jk';
+Vue.http.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+
+var WebServiceDomain = "http://192.168.0.199:8888/Services/";

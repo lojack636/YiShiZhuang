@@ -1,0 +1,22 @@
+function Company() {
+	this.data = $.extend({}, new TbLocation().data, {
+		CnName: "",
+		EnName: "",
+		CompCode: "",
+		CompShortTitle: "",
+		TopPosCode: "",
+		TopPosName: "",
+		Zipcode: "",
+		Tel: "",
+		Fax: "",
+		Mail: "",
+		Web: ""
+	});
+};
+Company.prototype.add = function(vm, success, error) {
+	vm.$http.post(WebServiceDomain + 'Company/Add', this.data).then(function(response) {
+		success(response);
+	}, function(response) {
+		error(response);
+	});
+};

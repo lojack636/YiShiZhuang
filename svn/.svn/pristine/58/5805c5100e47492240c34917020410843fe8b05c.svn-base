@@ -1,0 +1,14 @@
+function Department() {
+	this.data = $.extend({}, new TbLocation().data, {
+		PId: "",
+		Code: "",
+		Name: "",
+		Phone1: "",
+		Phone2: "",
+		Phone3: "",
+		ContactName: "",
+		ContactPhone: "",
+		DeptType: "",
+		OrderID: ""
+	});
+};

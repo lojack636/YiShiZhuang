@@ -1,0 +1,25 @@
+function TbId() {
+	this.data = {
+		Id: ""
+	}
+};
+
+function TbBase() {
+	this.data = $.extend({}, new TbId().data, {
+		ModDate: "",
+		UploadDate: "",
+		Del: "",
+		TrashFlag: "",
+		ExHost: ""
+	});
+};
+
+function TbLocation() {
+	this.data = $.extend({}, new TbBase().data, {
+		Addr: "",
+		Location: "",
+		AddrCode: "",
+		Lng: "",
+		Lat: ""
+	});
+};

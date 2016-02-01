@@ -1,0 +1,149 @@
+(function($) {
+	var template = '<div class="col-xs-12 no-padding-left" id="selectAdddress">\
+						<div class="col-xs-4 no-padding-left">\
+							<select v-model="province.code" id="address-province" class="chosen-select" data-placeholder="选择省份">\
+								<option value="">请选择省份</option>\
+								<option v-for="option in province.options" v-bind:value="option.Code">\
+								    {{ option.Name }}\
+								</option>\
+							</select>\
+						</div>\
+						<div class="col-xs-4 no-padding-left">\
+							<select v-model="city.code" id="address-city" class="chosen-select" data-placeholder="选择城市">\
+								<option value="">请选择城市</option>\
+								<option v-for="option in city.options" v-bind:value="option.Code">\
+								    {{ option.Name }}\
+								</option>\
+							</select>\
+						</div>\
+						<div class="space-20"></div>\
+						<div class="col-xs-12 no-padding-left">\
+							<div class="col-xs-4 no-padding-left">\
+								<select v-model="area.code" id="address-area" class="chosen-select" data-placeholder="选择区域">\
+									<option value="">请选择区域</option>\
+									<option v-for="option in area.options" v-bind:value="option.Code">\
+									    {{ option.Name }}\
+									</option>\
+								</select>\
+							</div>\
+							<div class="col-xs-4 no-padding-left">\
+								<select v-model="road.code" id="address-road" class="chosen-select" data-placeholder="选择街道">\
+									<option value="">请选择街道</option>\
+									<option v-for="option in road.options" v-bind:value="option.Code">\
+									    {{ option.Name }}\
+									</option>\
+								</select>\
+							</div>\
+						</div>\
+					</div>';
+
+
+	$.fn.selectAddress = function(options) {
+		var $self = $(this);
+		$(this).html(template);
+
+		var $province = $('#address-province'),
+			$city = $('#address-city'),
+			$area = $('#address-area'),
+			$road = $('#address-road'),
+			opt = {
+				allow_single_deselect: true,
+				search_contains: true
+			};
+		var vm = new Vue({
+			el: '#selectAdddress',
+			data: {
+				province: {
+					code: "",
+					options: []
+				},
+				city: {
+					code: "",
+					options: []
+				},
+				area: {
+					code: "",
+					options: []
+				},
+				road: {
+					code: "",
+					options: []
+				}
+			},
+			ready: function() {
+				var self = this;
+				addressSearch(this, "", function(response) {
+					self.$data.province.options = response.data;
+				});
+				if (!ace.vars['touch']) {
+					$('.chosen-select').chosen(opt);
+					//resize the chosen on window resize 
+					$(window).off('resize.chosen').on('resize.chosen', function() {
+						$('.chosen-select').each(function() {
+							var $this = $(this);
+							$this.next().css({
+								'width': $this.parent().width()
+							});
+							$this.css({
+								'width': $this.parent().width()
+							});
+						});
+					}).trigger('resize.chosen');
+				}
+			},
+			watch: {
+				"province.options": function(val) {
+					$province.chosen("destroy");
+					$province.chosen(opt);
+				},
+				"city.options": function(val) {
+					$city.chosen("destroy");
+					$city.chosen(opt);
+				},
+				"area.options": function(val) {
+					$area.chosen("destroy");
+					$area.chosen(opt);
+				},
+				"road.options": function(val) {
+					$road.chosen("destroy");
+					$road.chosen(opt);
+				}
+			}
+		})
+		$province.on('change', function(e) {
+			addressSearch(vm, $province.val(), function(response) {
+				vm.$data.city.options = response.data;
+				vm.$data.area.options = [];
+				vm.$data.road.options = [];
+				options.change($province.val());
+			});
+		});
+		$city.on('change', function() {
+			addressSearch(vm, $city.val(), function(response) {
+				vm.$data.area.options = response.data;
+				vm.$data.road.options = [];
+				options.change($city.val());
+			});
+		});
+		$area.on('change', function() {
+			addressSearch(vm, $area.val(), function(response) {
+				vm.$data.road.options = response.data;
+				options.change($area.val());
+			});
+		});
+		$road.on('change', function() {
+			options.change($road.val());
+		});
+	};
+	var addressSearch = function(vm, code, success, error) {
+		var data = {
+			Code: code,
+			pageSize: 9999
+		}
+		vm.$http.get(WebServiceDomain + 'AddrCode/Search', data).then(function(response) {
+			success(response);
+		}, function(response) {
+			error(response);
+		});
+	};
+})(jQuery)
